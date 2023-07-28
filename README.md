@@ -29,7 +29,7 @@
 
 Test Configuration: Macbook Pro 2018, 2.7GHz Quad-Core Intel Core i7, 8GB 2133 MHz LPDDR3 16GB RAM Python 3.9.6
 
-The improvement in performance of the `/api/v1/chat/completion/v1` endpoint is due to the fact that the api uses python generators to load the dataset on demand, as opposed to loading it all at once hence reducing the memory footprint of the application.
+> The improvement in performance of the `/api/v1/chat/completion/v1` endpoint is due to the fact that the api uses python generators to load the dataset on demand, as opposed to loading it all at once hence reducing the memory footprint of the application.
 
 
 ### Getting Started
