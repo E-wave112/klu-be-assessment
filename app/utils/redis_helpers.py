@@ -7,7 +7,6 @@ from app.utils.logger_file import get_logger_info
 logger = get_logger_info(__name__)
 
 REDIS_HOST = config("REDIS_HOST")
-REDIS_PASSWORD = config("REDIS_PASSWORD")
 REDIS_PORT = config("REDIS_PORT")
 
 
