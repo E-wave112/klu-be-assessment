@@ -12,10 +12,7 @@ REDIS_PORT = config("REDIS_PORT")
 
 
 def get_redis_instance():
-    redis_instance = redis.Redis(
-        host=REDIS_HOST,
-        port=REDIS_PORT
-    )
+    redis_instance = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
     return redis_instance
 
 

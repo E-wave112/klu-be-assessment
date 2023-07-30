@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Query
 
 import time
+
 # import random : uncomment this line for benchmarking non repeating payloads
 from datetime import timedelta
 import requests
@@ -113,8 +114,7 @@ def latency_measurement(
                     "value": "Fill sample data in the following table:\nCompanyName Region District StoreName EmployeeName GroupCustomerId TrafficCount TotalInteractionTime",
                 },
                 #  for benchmarking non repeating payloads
-                #  "conversation": random.choice(benchmark_dataset) 
-               
+                #  "conversation": random.choice(benchmark_dataset)
             },
         )
         latency = time.time() - start_time
