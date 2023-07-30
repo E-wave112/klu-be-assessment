@@ -50,7 +50,7 @@
 }
 ```
 
-Test Configuration: Macbook Pro 2018, 2.7GHz Quad-Core Intel Core i7, 8GB 2133 MHz LPDDR3 16GB RAM Python 3.9.6
+Test Configuration: Macbook Pro 2018, 2.7GHz Quad-Core Intel Core i7, 16GB RAM 2133 MHz LPDDR3 Python 3.9.6
 
 ### Getting Started
 
