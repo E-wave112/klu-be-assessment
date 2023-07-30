@@ -1,6 +1,6 @@
 ### A simple implementation of the [OpenAI Chat Completion](https://platform.openai.com/docs/guides/gpt/chat-completions-api) API built with [FastAPI](https://fastapi.tiangolo.com/)
 
-- The API demo can be found [here](https://www.loom.com/share/5e1ba34ea2ac4f3694e54376f8f4104d?sid=f93b6795-357f-48cc-92b3-9178262de767)
+- The API demo can be found [here](https://www.loom.com/share/7b56de39016546cf964e663c99d5006e?sid=5217093a-8a9a-4922-879e-2f264937b419)
 
 - **DATA-SOURCE** : [huggingface](https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered/blob/main/ShareGPT_V3_unfiltered_cleaned_split.json) (Be sure to download the file to the root of the project for the application to work)
 
