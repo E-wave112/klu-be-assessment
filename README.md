@@ -12,6 +12,8 @@
 
 100 Epochs(Requests)
 
+> The sample data in the `benchmark.json` file is extracted from the last 100 dictionaries in the core `ShareGPT_V3_unfiltered_cleaned_split.json` dataset.
+
 `/api/v1/chat/completion` **POST** (with repeated payloads)
 
 ```json
