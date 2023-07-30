@@ -1,12 +1,15 @@
 from fastapi import APIRouter, Query
 
 import time
+# import random : uncomment this line for benchmarking non repeating payloads
+from datetime import timedelta
 import requests
 import json
 from typing import Optional
 
 from app.api.dto import ConversationInput, ChatCompletionResponse
 from app.utils.logger_file import get_logger_info
+from app.utils.redis_helpers import get_redis_instance
 
 logger = get_logger_info(__name__)
 
@@ -14,6 +17,8 @@ conversation = APIRouter()
 
 
 dataset = json.load(open("ShareGPT_V3_unfiltered_cleaned_split.json", "r"))
+benchmark_dataset = json.load(open("benchmark.json", "r"))
+logger.info(f"Dataset array count: {len(dataset)}")
 
 
 class ChatCompletionRequest(ConversationInput):
@@ -49,6 +54,17 @@ def chat_completion(payload: ChatCompletionRequest):
     try:
         conversation_input = payload.conversation
 
+        redis_instance = get_redis_instance()
+        data = redis_instance.get(conversation_input["value"])
+        logger.info(f"Data from redis: {data}")
+        if data:
+            return {
+                "data": {
+                    "success": True,
+                    "response": json.loads(data),
+                }
+            }
+
         # Define a generator function to yield the next dictionary following the match
         def next_dict_generator():
             for item in dataset:
@@ -56,6 +72,12 @@ def chat_completion(payload: ChatCompletionRequest):
                 for i in range(len(conversations)):
                     if conversations[i].get("value") == conversation_input["value"]:
                         if i + 1 < len(conversations):
+                            # set the value in redis for one hour
+                            redis_instance.set(
+                                conversation_input["value"],
+                                json.dumps(conversations[i + 1]),
+                                ex=timedelta(minutes=60),
+                            )
                             yield conversations[i + 1]
 
         # Create the generator object
@@ -81,7 +103,7 @@ def latency_measurement(
     base_url = "http://127.0.0.1:8000/api/v1/chat"
     total_requests = 100
     total_latency = 0
-    for i in range(total_requests):
+    for _ in range(total_requests):
         start_time = time.time()
         requests.post(
             f"{base_url}{path}",
@@ -89,7 +111,10 @@ def latency_measurement(
                 "conversation": {
                     "from": "human",
                     "value": "Fill sample data in the following table:\nCompanyName Region District StoreName EmployeeName GroupCustomerId TrafficCount TotalInteractionTime",
-                }
+                },
+                #  for benchmarking non repeating payloads
+                #  "conversation": random.choice(benchmark_dataset) 
+               
             },
         )
         latency = time.time() - start_time

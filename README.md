@@ -5,31 +5,52 @@
 * **DATA-SOURCE** : [huggingface](https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered/blob/main/ShareGPT_V3_unfiltered_cleaned_split.json) (Be sure to download the file to the root of the project for the application to work)
 
 ### Benchmarks
+
+> As observed, The improvement in performance of the `/api/v1/chat/completion/v1` endpoint is due to the fact that the api uses python [generators](https://realpython.com/introduction-to-python-generators/) to load the dataset on demand, as opposed to loading it all at once hence reducing the memory footprint of the application. It also leverages [redis](https://redis.io) as a caching layer to reduce the number of lookups made to the dataset for repeated payloads.
+
 - NB: these benchmarks might vary due to network conditions and the resource on the machine at the time of testing.
 
 100 Epochs(Requests)
 
-`/api/v1/chat/completion` **POST**
+`/api/v1/chat/completion` **POST** (with repeated payloads)
 
 ```json
 {
-  "requests_per_minute": 353.93162027871574,
-  "avg_latency": 0.16952427124977112
+  "requests_per_minute": "343.76",
+  "avg_latency_in_seconds": "0.174539"
 }
 ```
 
-`/api/v1/chat/completion/v1` **POST**
+`/api/v1/chat/completion` **POST** (with non-repeated payloads)
 
 ```json
 {
-  "requests_per_minute": 369.69376208443566,
-  "avg_latency_in_seconds": 0.1468085641860962
+  "requests_per_minute": "437.89",
+  "avg_latency_in_seconds": "0.137020"
 }
 ```
+
+`/api/v1/chat/completion/v1` **POST** (with repeated payloads)
+
+```json
+{
+  "requests_per_minute": "8079.54",
+  "avg_latency_in_seconds": "0.007426"
+}
+```
+
+`/api/v1/chat/completion/v1` **POST** (with non-repeated payloads)
+
+
+```json
+{
+  "requests_per_minute": "3483.11",
+  "avg_latency_in_seconds": "0.017226"
+}
+```
+
 
 Test Configuration: Macbook Pro 2018, 2.7GHz Quad-Core Intel Core i7, 8GB 2133 MHz LPDDR3 16GB RAM Python 3.9.6
-
-> The improvement in performance of the `/api/v1/chat/completion/v1` endpoint is due to the fact that the api uses python generators to load the dataset on demand, as opposed to loading it all at once hence reducing the memory footprint of the application.
 
 
 ### Getting Started

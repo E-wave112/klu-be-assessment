@@ -1,0 +1,1023 @@
+[
+  {
+    "from": "human",
+    "value": "How do I define my pages and their controls as resources and then create the policies about which people or roles should have access to see them when using my application?"
+  },
+  { "from": "human", "value": "Assume my application is ASP.NET MVC Core" },
+  { "from": "human", "value": "assume I'm using Azure AD for authentcation" },
+  {
+    "from": "human",
+    "value": "I don't want to hard code any role name checks in my code"
+  },
+  {
+    "from": "human",
+    "value": "isn't this just hard coding group names in my code"
+  },
+  {
+    "from": "human",
+    "value": "show me the code for the CustomAuthorizationMiddleware"
+  },
+  {
+    "from": "human",
+    "value": "How would I define these claims? What type of objects would they be and how would users be assigned access to them?"
+  },
+  {
+    "from": "human",
+    "value": "how do you define permissions for each app role"
+  },
+  {
+    "from": "human",
+    "value": "so, each protected page or control would be created as an app role in this authorization model"
+  },
+  {
+    "from": "human",
+    "value": "If I want to ndividually control access to each page and control, how would I do that"
+  },
+  {
+    "from": "human",
+    "value": "in this example my pages and controls would be defined as scopes?"
+  },
+  {
+    "from": "human",
+    "value": "but scopes use consent and access can't be assigned or delegated to users like app roles can it?"
+  },
+  {
+    "from": "human",
+    "value": "so, if my model depends mainly on assigning access to users for specific pages and controls, I should create the pages and controls as app roles?"
+  },
+  {
+    "from": "human",
+    "value": "I'm confused about the permissions property for app roles and whether the app role represents my page or does the permission represent my page"
+  },
+  {
+    "from": "human",
+    "value": "what is the difference between these permissions and scopes?"
+  },
+  {
+    "from": "human",
+    "value": "I only see an oauth2Permissions property in the manifest not one named permissions"
+  },
+  {
+    "from": "human",
+    "value": "but that is for scopes and we decided we needed something different since our app won't use consent for permissions but rather assignment"
+  },
+  {
+    "from": "human",
+    "value": "are there limits to the number of app roles per app or app role assignments per user?"
+  },
+  {
+    "from": "human",
+    "value": "I would like to eliminate hard coded string checks for names or roles in my application and for it to receive the list of protected pages and controls a user may access during login"
+  },
+  {
+    "from": "human",
+    "value": "If there is a limit on the number of app roles and I don't want to represent my app resources as groups, how else could I store them?"
+  },
+  {
+    "from": "human",
+    "value": "the claim example is still checking for a hard coded string"
+  },
+  {
+    "from": "human",
+    "value": "Could each protected control or page just have a unique guide and have a check access method that either makes a live REST API call or checks against a list of accessible GUIDs that were retrieved during login either via claims or a REST call?"
+  },
+  { "from": "human", "value": "could this be improved in any way?" },
+  {
+    "from": "human",
+    "value": "show me an example with all of these improvements"
+  },
+  { "from": "human", "value": "What is an OPA partial query or reverse query" },
+  {
+    "from": "human",
+    "value": "How could partial queries be used for my application to make a call and get back a list of rights plus their constraints or context restrictions for a user"
+  },
+  {
+    "from": "human",
+    "value": "Can I get a specific example where my applications has the right CreatePurchaseOrder which is constrained by a country value so users are only authorized to have the right for specific countries based on their assignments. I want to ask OPA if a user has this right and have OPA return the constraints that user has for that right if they do indeed have it"
+  },
+  {
+    "from": "human",
+    "value": "what would the JSON data look like for a few example users and their authorizations where each may or may not have the right and if they do they have it only for one or more country values but not all"
+  },
+  {
+    "from": "human",
+    "value": "given this data, how could my application make a call to OPA to determine if user3 has the right and if so, what are the constraints"
+  },
+  {
+    "from": "human",
+    "value": "Let's add another right called ApprovePurchaseOrder which has the same country constraint"
+  },
+  { "from": "human", "value": "why did you use createinvoice in the example?" },
+  { "from": "human", "value": "thank you" },
+  {
+    "from": "human",
+    "value": "generate an example JSON data file for these rights and a variety of assignments and constraints for 4 users"
+  },
+  {
+    "from": "human",
+    "value": "In my C# application, I have records in SQL for PurchaseOrders which are exposed to my application code using the entity framework. One of the properties of these purchaseorder objects is the country. How could my C# code call opa for a specific user, example, user3 to check if the user has the right to ApprovePurchaseOrder for the purchase order record named acmefireworksPO29289 which has a country value of Norway"
+  },
+  {
+    "from": "human",
+    "value": "Can we make this code more dynamic where it retrieves the PurchaseOrder object and then passes the country value for that object in the OPA call"
+  },
+  {
+    "from": "human",
+    "value": "Can we refactor the code so we don't have to explicitly pass country in the GetConstraintsForUser method instead it will get all constraints the user has for that right. There could be constraints based on country as well as an enum property named CustomerLevel with values of silver, gold, and platinum"
+  },
+  {
+    "from": "human",
+    "value": "Could we refactor the code to check if all constraints are a match to allow access? If only one constraint is assigned and the user is a match then access is authorized. If more than one constraint was specified in the access assignment or policy then all must be met as a match on the object"
+  },
+  {
+    "from": "human",
+    "value": "you are hard coding the cases for each constraint. MAke it dynamic based upon the constraints that come back from OPA for this user and right"
+  },
+  {
+    "from": "human",
+    "value": "assume if the user has the right without any constraints then they are authorized"
+  },
+  {
+    "from": "human",
+    "value": "if the user does not have the right they are not authorized"
+  },
+  {
+    "from": "human",
+    "value": "Can we simplify the else statements so there is an if authorized and one else if you are not that sets the IsAuthorized to false. I don't want to handle each case"
+  },
+  {
+    "from": "human",
+    "value": "this logic doesn't seem to be correct. If constraints is null or count == 0 then the user would be authorized as long as they have the right"
+  },
+  {
+    "from": "human",
+    "value": "just for safety sake, for the case where there are constraints, I would prefer isAuthoized is false until it is evaluated that the user meets all of the constraint requirements"
+  },
+  { "from": "human", "value": "how could this code be improved?" },
+  {
+    "from": "human",
+    "value": "Show me how my code could implement suggestion 5"
+  },
+  { "from": "human", "value": "C" },
+  {
+    "from": "human",
+    "value": "I would like the policies to not be defined in C# code but rather managed centrally and then evaluated using a rego rule that looks at the JSON data of user to application right assignments and their constraints"
+  },
+  {
+    "from": "human",
+    "value": "I want my rego rule to be less hard coded and authorize access is the user has the rights and restraints required in the OPA request"
+  },
+  {
+    "from": "human",
+    "value": "yes, I want two options in my C# code. the first is for the C# application to pass all of the data to OPA to get a true or false answer. the app would pass the user, the right to check and the constraints and the opa rule would check the JSON data file to see if the user had an access grant with the right in question and the constrain values specified by the calling C# application. The second option available in my C# code is to pass the user and the right and OPA returns a result telling if the user has that right and any constraints they have in the assignment. the application would then check against the object in question to determine is the user is authorized or not much like our example where we were checking for the ApprovePurchaseOrder right for acmefireworksPO29289"
+  },
+  {
+    "from": "human",
+    "value": "In example 1, can we make it dynamic like example 2 and pull the required constraint values from the object itself, in this case acmefireworksPO29289"
+  },
+  {
+    "from": "human",
+    "value": "Can we refactor both options as two easy to use methods"
+  },
+  {
+    "from": "human",
+    "value": "and both of these methods work using which example rego rule and JSON data file?"
+  },
+  {
+    "from": "human",
+    "value": "Can we refactor our code, the rego rule, and the JSON file to support their being multiple applications"
+  },
+  {
+    "from": "human",
+    "value": "Can we reorganize the JSON file so the hierarchy is application, then user, then rights and constraints"
+  },
+  {
+    "from": "human",
+    "value": "for application refactor to name the variable AppID. refactor user to be PersonLogin. Refactor right to be AzLocalRight. Refactor the constraint names and values to be called FieldType and corresponding FieldTypeValues"
+  },
+  {
+    "from": "human",
+    "value": "generate an example rego rule, a JSON data file for 10 users, 5 applications, and a random use of fieldtypes for constraints of Country, CustomerLevel, and State"
+  },
+  {
+    "from": "human",
+    "value": "make some of the data in the JSON value have multiple values for the constrain the user is authorized. Example multiple countries"
+  },
+  {
+    "from": "human",
+    "value": "Generate a C# console application that could be used to test both OPA methods"
+  },
+  {
+    "from": "human",
+    "value": "So far we have not had the concept of a resource for our authorization checks. We are assuming the rights and constraints are global for the application. Let's expand our mode to include resources so the rights are specific to a resource type and the constraints are specific to a right and multiple resources of each type exist for an application and the user assigned authorizations grant them rights with constraints for these resources"
+  },
+  {
+    "from": "human",
+    "value": "Let's not use pages and buttons as our resource types but rather Invoices, PurchaseOrders, and Companies"
+  },
+  {
+    "from": "human",
+    "value": "invoiceamount, country, and customerlevel should be single valued for our resources"
+  },
+  {
+    "from": "human",
+    "value": "rights and constraints aren't assigned to resources. The definitions of the rights and fieldtypes and possible values are defined per application resource type but the authorization assignments for these resources are to users"
+  },
+  {
+    "from": "human",
+    "value": "please regenerate the JSON and code based on these new assumptions"
+  },
+  {
+    "from": "human",
+    "value": "For the constraints, we need to define the list of FieldTypes for each resource type right and then for each FieldType a list of possible FieldTypeValues"
+  },
+  {
+    "from": "human",
+    "value": "I don't see where we are listing the possible FieldTypeValues for each field type. I also see that we seem to use Right and AzLocalRight redundantly in the JSON. they are the same thing so just use AzLocalRight"
+  },
+  {
+    "from": "human",
+    "value": "Constraints and FieldTypes are also redundant meaning the same thing. Let's just use FieldTypes"
+  },
+  {
+    "from": "human",
+    "value": "Sorry but in the ResourceAccesses portion of the JSON, let's Rename FieldTypes back to Constraints"
+  },
+  {
+    "from": "human",
+    "value": "none of the user accesses specify a specific resource"
+  },
+  {
+    "from": "human",
+    "value": "Resources of a resource type should not be subnodes of the AzLocalRight. Resource Types have AzLocalRights and AzLocalRights have FieldTypes with possible assignable fieldtypevalues and then the application can have a list of resources of each type which would have single values for properties of their objects that match FieldTypes and the values we have defined"
+  },
+  {
+    "from": "human",
+    "value": "don't specify a specific value in the definition of the FieldTypeValues for invoices"
+  },
+  {
+    "from": "human",
+    "value": "when defining a resource the fieldtype and fieldtype value are not constraints so there is no need for that level in the JSON here"
+  },
+  {
+    "from": "human",
+    "value": "Make the ResourceAccesses scoped to specific resources"
+  },
+  {
+    "from": "human",
+    "value": "The resourceaccesses should not be subnodes under the resources but rather separate from the resource definitions section"
+  },
+  {
+    "from": "human",
+    "value": "You still have resourceaccesses under the resource. Make them a separate section in the JSON file"
+  },
+  {
+    "from": "human",
+    "value": "One change to make is that in the definition of our AzLocalRights and their FieldTypes we no longer list the possible fieldtypevalues"
+  },
+  {
+    "from": "human",
+    "value": "yes - please regenrate the JSON file with this fix"
+  },
+  {
+    "from": "human",
+    "value": "The ResourceType definition should not include the resources themselves. Please separate out the resources into their own section in the JSON. do the same and separate out the ResourceAccesses as well. Both should be under the application but in their own sections"
+  },
+  {
+    "from": "human",
+    "value": "Please modify to make some of the resourceaccesses assignments scoped for specific resources"
+  },
+  {
+    "from": "human",
+    "value": "Reorganize the resourceaccesses to organize by PersonLogin as the first level, then resource as the second level"
+  },
+  {
+    "from": "human",
+    "value": "Instead of grouping ResourceAccesses with a section for each ResourceType, instead just list them together with ResourceType as a property"
+  },
+  {
+    "from": "human",
+    "value": "You also made this change to the ResourceTypes definition section. Please roll that back but keep the other"
+  },
+  {
+    "from": "human",
+    "value": "For this portion of the JSON \" \"ResourceAccesses\": {\n \"user1\": {\n \"Invoices\": [\n {\" please remove the section by resourcetype and instead make resourcetype a property"
+  },
+  { "from": "human", "value": "please finish where you left off" },
+  {
+    "from": "human",
+    "value": "The Resourceaccesses node should be application specific and under their corresponding root AppID node"
+  },
+  { "from": "human", "value": "you did not finish" },
+  { "from": "human", "value": "why didn't you finish?" },
+  {
+    "from": "human",
+    "value": "you ended on the resources section in the middle"
+  },
+  {
+    "from": "human",
+    "value": "A previous version of the JSON was better. Here is what part of it looked like that was correct \"{\n \"AppID\": \"myapp\",\n \"ResourceTypes\": {\n \"Invoice\": {\n \"AzLocalRights\": [\n {\n \"AzLocalRightName\": \"CreateInvoice\",\n \"FieldTypes\": [\n {\n \"FieldType\": \"InvoiceAmount\",\n \"FieldTypeValues\": [100, 200, 300]\n },\n {\n \"FieldType\": \"Country\",\n \"FieldTypeValues\": [\"Norway\", \"Sweden\", \"Finland\"]\n }\n ]\n },\""
+  },
+  {
+    "from": "human",
+    "value": "that is better. The change I would like to request is in the structure of this section. this is how it is currently. \"ResourceAccesses\": {\n \"myuser1\": {\n \"Invoice\": [\n {\n \"ResourceID\": \"inv001\",\n \"AzLocalRightName\": \"CreateInvoice\",\n \"Constraints\": {\n \"InvoiceAmount\": 100,\n \"Country\": \"Norway\"\n }\n },\" . I'd prefer it to be structured like this instead \"\"ResourceAccesses\": {\n \"myuser1\": {\n \"Invoice\": [\n {\n \"ResourceID\": \"inv001\",\n ResourceType: \"Invoice\",\"AzLocalRightName\": \"CreateInvoice\",\n \"Constraints\": {\n \"InvoiceAmount\": 100,\n \"Country\": \"Norway\"\n }\n },\" \""
+  },
+  {
+    "from": "human",
+    "value": "that is better. The change I would like to request is in the structure of this section. this is how it is currently. \"ResourceAccesses\": {\n \"myuser1\": {\n \"Invoice\": [\n {\n \"ResourceID\": \"inv001\",\n \"AzLocalRightName\": \"CreateInvoice\",\n \"Constraints\": {\n \"InvoiceAmount\": 100,\n \"Country\": \"Norway\"\n }\n },\" . I'd prefer it to be structured like this instead \"\"ResourceAccesses\": {\n \"myuser1\": {\n {\n \"ResourceID\": \"inv001\",\n \"ResourceType\": \"Invoice\",\n \"AzLocalRightName\": \"CreateInvoice\",\n \"Constraints\": {\n \"InvoiceAmount\": 100,\n \"Country\": \"Norway\"\n }\n },\" \""
+  },
+  {
+    "from": "human",
+    "value": "Now using this new JSON data format, please regenerate my C# code for the two methods to call OPA and the rego rule"
+  },
+  {
+    "from": "human",
+    "value": "Is passing the ResourceType really need for the rego rule or is it enough to pass the resourceID?"
+  },
+  {
+    "from": "human",
+    "value": "We will ensure the resourceID is unique either as an int or even better a GUID"
+  },
+  {
+    "from": "human",
+    "value": "please rewrite all of it with this new assumption to simplify"
+  },
+  {
+    "from": "human",
+    "value": "You stopped generating in the middle. Can you try again to generate all of it"
+  },
+  { "from": "human", "value": "Can I also get the updated rego rule?" },
+  {
+    "from": "human",
+    "value": "does this code and rule support both of the two methods we discussed? The one to pass in all the data and see if is authorized and the other to pass in the person and right and get the constraints"
+  },
+  { "from": "human", "value": "Can I get the JSON data file again" },
+  { "from": "human", "value": "Can I get the C# code again" },
+  {
+    "from": "human",
+    "value": "not the console app code. the previous code for my ASP.NET Core MVC application but now to work with this JSON data file and rego rules"
+  },
+  {
+    "from": "human",
+    "value": "You stopped at \"public static class JsonData\". Please give me the code from this point to the end"
+  },
+  {
+    "from": "human",
+    "value": "You stopped at \"if (!user.Identity.IsAuthenticated)\n {\n context.Result =\". Please give me the code from here to the end"
+  },
+  {
+    "from": "human",
+    "value": "Can I get the latest version of the REGO rules again"
+  },
+  {
+    "from": "human",
+    "value": "We decided that resourceid would be a unique guid and that resourcetype would not be required. Please update the rego rule based on these decisions"
+  },
+  {
+    "from": "human",
+    "value": "Is there anything that could be done to improve how the C# developer will use this code to make authorization checks? Any way to make it easier for them and less complex"
+  },
+  {
+    "from": "human",
+    "value": "for options 1 and 2, would I still be able to use OPA, the JSON data, and the rego rule we created?"
+  },
+  {
+    "from": "human",
+    "value": "do both meet my requirement of no role or permissions checks based on hard coded strings"
+  },
+  { "from": "human", "value": "which is a better option?" },
+  { "from": "human", "value": "Please generate the code based on option 2" },
+  {
+    "from": "human",
+    "value": "You stopped generating the code here \" .Where(x => x[\"ResourceID\"]?.Value() != null &&\n x[\"AzLocalRightName\"]?.Value() == rightName &&\n (string.IsNullOrEmpty\". Please generate the rest of the code"
+  },
+  {
+    "from": "human",
+    "value": "How could this code be used in a REACT application"
+  },
+  { "from": "human", "value": "How could my C# code be improved further" },
+  {
+    "from": "human",
+    "value": "Please generate the code with your recommendations 1, 4, 5, 6, and 7"
+  },
+  {
+    "from": "human",
+    "value": "In this authorization model we have designed, assume one of our resource types is DatabaseTable. DatabaseTable has FieldTypes of TableName with possible values of Invoice, PurchaseOrder, and Person. The DatabaseTable resourcetype also has FieldTypes of Country and Company with the same values we have been using for our other resource types. If I were an application developer and my data access layer was entity framework core and my data mode had tables and objects for Invoice, PurchaseOrder, and Person. How could I call OPA to get the constraints a person has for a specified Table and then implement those as filters in my data layer like a where clause"
+  },
+  {
+    "from": "human",
+    "value": "Is there a way I could make this more dynamic and decorate my data access methods to inject my logic to get the constraints for that user for the table resource specified for the read right and add that as additional filters"
+  },
+  {
+    "from": "human",
+    "value": "How would I do this differently if I were using Dapper instead"
+  },
+  {
+    "from": "human",
+    "value": "How could I apply these same type of filters if my application was calling the Elastic Search REST API for data"
+  },
+  {
+    "from": "human",
+    "value": "How would I do the same if my application as using Azure Cognitive Search for data and searching"
+  },
+  {
+    "from": "human",
+    "value": "what would be the rego rule for these new cases to filter data coming from databases and data sources"
+  },
+  {
+    "from": "human",
+    "value": "would my JSON data file need to chane or the same schema we have designed so far would work"
+  },
+  {
+    "from": "human",
+    "value": "You are a clinical tutor for new graduate nurses in New Zealand. Write a unit plan to teach pressure injury assessment and treatment."
+  },
+  {
+    "from": "human",
+    "value": "Generate a table of the key vocabulary for this unit, with everyday language definitions."
+  },
+  { "from": "human", "value": "Generate a quiz for lesson 2" },
+  {
+    "from": "human",
+    "value": "Generate 3 case study scenarios about fictional patients of varying ages, with a New Zealand context. Create a series of tasks the nursing students should carry out to engage them in their learning about this topic. Provide / generate any worksheets or resources require."
+  },
+  {
+    "from": "human",
+    "value": "Generate the resources listed, for use in this case study learning."
+  },
+  { "from": "human", "value": "Great, now do the same for Lesson 2." },
+  {
+    "from": "human",
+    "value": "Lets play Dungeons and Dragons. I'm a halfling rogue and you're the DM."
+  },
+  { "from": "human", "value": "I'm not sure. You make it up for me." },
+  { "from": "human", "value": "Can you make a character sheet for Finnley?" },
+  {
+    "from": "human",
+    "value": "Ya, this looks great. Can you make 3 other party members to join me on the campaign?"
+  },
+  {
+    "from": "human",
+    "value": "This looks great. Lets start playing. You're the DM but also take on the role of the other 3 party members. I'll just be Finnley."
+  },
+  {
+    "from": "human",
+    "value": "I ask the guards what clues they have that I could use to find the location or identity of the thief."
+  },
+  {
+    "from": "human",
+    "value": "I ask my other party members if this symbol means anything to them."
+  },
+  {
+    "from": "human",
+    "value": "I ask if there is a temple of Selune anywhere in the city."
+  },
+  {
+    "from": "human",
+    "value": "I approach one of the priestesses and say that I'd like to learn more about Selune and her followers."
+  },
+  {
+    "from": "human",
+    "value": "I take a seat near hooded follower and wait to see if he acknowledges me."
+  },
+  { "from": "human", "value": "I ask Elara what she thinks." },
+  {
+    "from": "human",
+    "value": "I look for other leads and suspects but I make sure that we have a way to find Maric again in the future."
+  },
+  { "from": "human", "value": "Lets proceed with the adventure." },
+  { "from": "human", "value": "Who in the party has the best perception?" },
+  {
+    "from": "human",
+    "value": "Lets have Elara check for traps before we enter."
+  },
+  {
+    "from": "human",
+    "value": "Ok, we enter and go upstairs to investigate the noise."
+  },
+  {
+    "from": "human",
+    "value": "I use stealth to try and get within grabbing distance of the figure without them noticing me."
+  },
+  { "from": "human", "value": "I grab the figure and remove their mask." },
+  { "from": "human", "value": "I ask Maric what he's doing here." },
+  {
+    "from": "human",
+    "value": "I try to help him. I ask him where he was taking the stolen loot."
+  },
+  { "from": "human", "value": "I ask Maric what happens in the temple." },
+  { "from": "human", "value": "Does the figure see us?" },
+  {
+    "from": "human",
+    "value": "I have Elara ready her bow to fire at the figure while I try to stealth close enough to grab them."
+  },
+  { "from": "human", "value": "I jump on her back and try to restrain her." },
+  {
+    "from": "human",
+    "value": "Lets get back to the campaign. I ask the figure we've just apprehended about the crescent moon tattoo on her forehead."
+  },
+  {
+    "from": "human",
+    "value": "I think thats enough for me for tonight. Lets save this place and come back to the campaign later."
+  },
+  {
+    "from": "human",
+    "value": "Web search results:\n\n[1] \"Terme de salutation dont on se sert pendant la journ\u00e9e quand on aborde quelqu'un ou, moins souvent, quand on prend cong\u00e9 de quelqu'un : Bonjour, comment allez-vous ? Synonyme : salut. Contraires : adieu - au revoir - bonsoir - salut\"\nURL: https://www.larousse.fr/dictionnaires/francais/bonjour/10161\nCurrent date: 21/03/2023\n\nInstructions: Using the provided web search results, write a comprehensive reply to the given query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refer to multiple subjects with the same name, write separate answers for each subject.\nQuery: bonjour\nReply in Fran\u00e7ais"
+  },
+  {
+    "from": "human",
+    "value": "Web search results:\n\n[1] \"De tr\u00e8s nombreux exemples de phrases traduites contenant \"continue writing\" - Dictionnaire fran\u00e7ais-anglais et moteur de recherche de traductions fran\u00e7aises. continue writing - Traduction fran\u00e7aise - Linguee\"\nURL: https://www.linguee.fr/anglais-francais/traduction/continue+writing.html\n\n[2] \"Member. French. May 16, 2015. #1. Please could you help me? I read a few biographies where it was written \"he continued to write up to his death\" whereas in others it was written \"he continued writing up to his death\". Which one is correct? if the two sentences are correct could you tell me the difference between these two sentences?\"\nURL: https://forum.wordreference.com/threads/continue-to-write-or-writing.3015911/\n\n[3] \"Please pardon the intrusion. I apologize for the interruption. Excuse me, I didn't mean to interrupt. and various others. To suggest everyone should continue what they are doing: Don't mind me. Don't let me interrupt you. Please go on. Please continue. and various others. \"Please finish the sentence\", however, feels a bit peremptory.\"\nURL: https://ell.stackexchange.com/questions/208652/please-continue-or-please-complete-your-sentence\nCurrent date: 21/03/2023\n\nInstructions: Using the provided web search results, write a comprehensive reply to the given query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refer to multiple subjects with the same name, write separate answers for each subject.\nQuery: Continue writing please\nReply in Fran\u00e7ais"
+  },
+  { "from": "human", "value": "ASIN world lookup" },
+  {
+    "from": "human",
+    "value": "I don't want to use Amazon API. I need the extension to read the ASIN code directly on the webpage"
+  },
+  {
+    "from": "human",
+    "value": "please give me the code for each fil so that I can copy it into visual studio code"
+  },
+  { "from": "human", "value": "continue please" },
+  {
+    "from": "human",
+    "value": "erreur chrome : Manifest version 2 is deprecated, and support will be removed in 2023. See https://developer.chrome.com/blog/mv2-transition/ for more details.\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n{\n \"manifest\\_version\": 2,\n \"name\": \"ASIN Price and Review Checker\",\n \"version\": \"1.0\",\n \"description\": \"A Chrome extension to check the selling price and number of reviews for a specified ASIN on different Amazon marketplaces.\",\n \"icons\": {\n \"48\": \"icons/icon48.png\",\n \"128\": \"icons/icon128.png\"\n },\n \"permissions\": ["
+  },
+  {
+    "from": "human",
+    "value": "the extension works well for checking and reporting the number of reviews for each amazon marketplace. So this is great thank you for it. But there is on important thing to fix. the extension says that selling price is Not available for each market place, which is an error"
+  },
+  {
+    "from": "human",
+    "value": "good. But the extension is quite long to run. Could you please add country flags for each marketplaces. And also, save the output so that the extension does not need to run again searches for the next 6 hours"
+  },
+  {
+    "from": "human",
+    "value": "can please wright the full popup.html code so that I can copy and paste it"
+  },
+  {
+    "from": "human",
+    "value": "can please wright the full popup.js code so that I can copy and paste it"
+  },
+  { "from": "human", "value": "continue please" },
+  {
+    "from": "human",
+    "value": "the flags don't print correctly. I get a character list instead such as : \u00f0\u0178\u2021\u00ab\u00f0\u0178\u2021\u00b7 Amazon.fr"
+  },
+  {
+    "from": "human",
+    "value": "1 new updates I would like to add to this great google extensions. I would like the extension to run only if I click on a button that is visible on my screen, on the right side"
+  },
+  {
+    "from": "human",
+    "value": "can you please write the full popup.html code so that I can copy and paste it ?"
+  },
+  {
+    "from": "human",
+    "value": "can you please write the full popup.js code so that I can copy and paste it ?"
+  },
+  {
+    "from": "human",
+    "value": "I would like to see if search is runing or not. Please show \"loading...\" only when search is occuring"
+  },
+  {
+    "from": "human",
+    "value": "remove the Check Price and reviews button. I wan't the extention to run only if I click on the extension icon. Do you understand and do you have questions ?"
+  },
+  { "from": "human", "value": "can you write the full html code please" },
+  {
+    "from": "human",
+    "value": "I need to see that the extention is running. Please add a message \"loading in process...\" untill the result arrive. Also, I would like the extension to run even if I change tab or look at another browser"
+  },
+  {
+    "from": "human",
+    "value": "I need the extension to save results for the next 12 hours so that It does not need to load again datas for 12 hours after it has a run for an ASIN"
+  },
+  {
+    "from": "human",
+    "value": "if i get out of an ASIN page and come back later I want the extension to print the datas that was collected during the last 12 hours. If no data have been collected during last 12 hours, it can load new datas"
+  },
+  {
+    "from": "human",
+    "value": "I would like to see discount price in a new column and ideally the percentage of discount over the normal price"
+  },
+  {
+    "from": "human",
+    "value": "error in the popup.js file : The parser expected to find a '}' to match the '{' token here."
+  },
+  { "from": "human", "value": "can you write the full html code ?" },
+  {
+    "from": "human",
+    "value": "google chrome error : Erreurs\nUnchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\nContexte\npopup.html\nTrace de la pile\npopup.html:0 (fonction anonyme)"
+  },
+  {
+    "from": "human",
+    "value": "Erreurs\nPermission '' is unknown or URL pattern is malformed.\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n{\n \"manifest\\_version\": 3,\n \"name\": \"ASIN Price and Review Checker\",\n \"version\": \"1.0\",\n \"description\": \"A Chrome extension to check the selling price and number of reviews for a specified ASIN on different Amazon marketplaces.\",\n \"icons\": {\n \"48\": \"icons/icon48.png\",\n \"128\": \"icons/icon128.png\"\n },\n \"permissions\": [\n \"tabs\",\n \"activeTab\",\n \"storage\",\n \"\"\n ],\n \"action\": {\n \"default\\_popup\": \"popup.html\",\n \"default\\_icon\": {\n \"48\": \"icons/icon48.png\"\n }\n },\n \"content\\_scripts\": [\n {\n \"matches\": [\n \"\\*://\\*.amazon.com/\\*\",\n \"\\*://\\*.amazon.co.uk/\\*\",\n \"\\*://\\*.amazon.de/\\*\",\n \"\\*://\\*.amazon.fr/\\*\",\n \"\\*://\\*.amazon.it/\\*\",\n \"\\*://\\*.amazon.es/\\*\",\n \"\\*://\\*.amazon.ca/\\*\"\n ],\n \"js\": [\"content.js\"]\n }\n ]\n}\n \nUncaught (in promise) ReferenceError: getFromCache is not defined"
+  },
+  {
+    "from": "human",
+    "value": "can you please write the full popup.js file so that i can copy and paste it"
+  },
+  { "from": "human", "value": "continue please" },
+  {
+    "from": "human",
+    "value": "error google chrome : Erreurs\nPermission '\\*://\\*/\\*' is unknown or URL pattern is malformed."
+  },
+  {
+    "from": "human",
+    "value": "Erreurs\nPermission '' is unknown or URL pattern is malformed."
+  },
+  {
+    "from": "human",
+    "value": "price and discounted price columns are shown as \"Not available\". Maybe we should use Old Price and New Price and calculate the % price change from old to new price"
+  },
+  {
+    "from": "human",
+    "value": "here is the output that i have : ASIN Price and Review Checker\nMarketplace Price Discounted Price Reviews\n\ud83c\uddfa\ud83c\uddf8 amazon.com Not available Not available Not available 0\n\ud83c\uddec\ud83c\udde7 amazon.co.uk Not available Not available Not available 469\n\ud83c\udde9\ud83c\uddea amazon.de Not available Not available Not available 469\n\ud83c\uddeb\ud83c\uddf7 amazon.fr Not available Not available Not available 501\n\ud83c\uddee\ud83c\uddf9 amazon.it Not available Not available Not available 469\n\ud83c\uddea\ud83c\uddf8 amazon.es Not available Not available Not available 469\n\ud83c\udde8\ud83c\udde6 amazon.ca Not available Not available Not available 0"
+  },
+  {
+    "from": "human",
+    "value": "there are no output results with this new code. I thiny we need to use the right terms to collect the information. For amazon.fr \"Old price\" is called \"Ancien prix\" for example. and the new price is the one shown on the top of the Buy Box. So let's change name of colums. I want to see as a first column the marketplace, then the Buy Box Price in the second colum,n, then the Old Price in the third column, then the number of reviews. No need to calculate the percentage of price change anymore"
+  },
+  {
+    "from": "human",
+    "value": "please right the full popup.js code so that I can copy and paste it"
+  },
+  { "from": "human", "value": "continue please" },
+  {
+    "from": "human",
+    "value": "[{\n \"resource\": \"/Users/adrienfrerejean/Desktop/ASIN lookup V2/popup.js\",\n \"owner\": \"typescript\",\n \"code\": \"1005\",\n \"severity\": 8,\n \"message\": \"'}' expected.\",\n \"source\": \"ts\",\n \"startLineNumber\": 103,\n \"startColumn\": 14,\n \"endLineNumber\": 103,\n \"endColumn\": 15\n}]"
+  },
+  { "from": "human", "value": "continue please" },
+  {
+    "from": "human",
+    "value": "can you please write again the full html code so that I can copy and paste it"
+  },
+  {
+    "from": "human",
+    "value": "erreur : Marketplace Buy Box Price Old Price Reviews\n\ud83c\uddfa\ud83c\uddf8 amazon.com Not available Not available 172\n\ud83c\uddec\ud83c\udde7 amazon.co.uk Not available Not available 175\n\ud83c\udde9\ud83c\uddea amazon.de Not available Not available 170\n\ud83c\uddeb\ud83c\uddf7 amazon.fr Not available Not available 168\n\ud83c\uddee\ud83c\uddf9 amazon.it Not available Not available 168\n\ud83c\uddea\ud83c\uddf8 amazon.es Not available Not available 168\n\ud83c\udde8\ud83c\udde6 amazon.ca Not available Not available 168"
+  },
+  {
+    "from": "human",
+    "value": "the css for the buy box price is : .pricePerUnit"
+  },
+  { "from": "human", "value": "the old price css selector is : .a-text-price" },
+  {
+    "from": "human",
+    "value": "here is the old js code, can you please update it to get the correct buy box price and old price"
+  },
+  {
+    "from": "human",
+    "value": "document.addEventListener(\"DOMContentLoaded\", async () => {\n const asin = await getASIN();\n if (!asin) {\n displayError(\"ASIN not found.\");\n return;\n }\n\n const cachedData = await getFromCache(asin);\n if (cachedData) {\n displayResults(cachedData);\n } else {\n displayLoading(true);\n const results = await fetchPriceAndReviews(asin);\n displayResults(results);\n saveToCache(asin, results);\n displayLoading(false);\n }\n});\n\nasync function getASIN() {\n return new Promise((resolve) => {\n chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {\n const tab = tabs[0];\n const asin = tab.url.match(/\\/dp\\/([A-Z0-9]{10})/);\n resolve(asin ? asin[1] : null);\n });\n });\n}\n\nasync function fetchPriceAndReviews(asin) {\n const marketplaces = [\n {\n domain: \"amazon.com\",\n flag: \"\ud83c\uddfa\ud83c\uddf8\",\n },\n {\n domain: \"amazon.co.uk\",\n flag: \"\ud83c\uddec\ud83c\udde7\",\n },\n {\n domain: \"amazon.de\",\n flag: \"\ud83c\udde9\ud83c\uddea\",\n },\n {\n domain: \"amazon.fr\",\n flag: \"\ud83c\uddeb\ud83c\uddf7\",\n },\n {\n domain: \"amazon.it\",\n flag: \"\ud83c\uddee\ud83c\uddf9\",\n },\n {\n domain: \"amazon.es\",\n flag: \"\ud83c\uddea\ud83c\uddf8\",\n },\n {\n domain: \"amazon.ca\",\n flag: \"\ud83c\udde8\ud83c\udde6\",\n },\n ];\n\n const results = [];\n\n for (const marketplace of marketplaces) {\n const url = `https://${marketplace.domain}/dp/${asin}`;\n const response = await fetch(url);\n const text = await response.text();\n const parser = new DOMParser();\n const doc = parser.parseFromString(text, \"text/html\");\n\n const buyBoxPrice = doc.querySelector(\"#priceblock\\_ourprice, #priceblock\\_dealprice\");\n const oldPrice = doc.querySelector(\".priceBlockStrikePriceString, .priceBlockSavingsString\");\n const reviews = doc.querySelector(\"#acrCustomerReviewText\");\n\n results.push({\n marketplace: `${marketplace.flag} ${marketplace.domain}`,\n buyBoxPrice: buyBoxPrice ? buyBoxPrice.textContent.trim() : \"Not available\",\n oldPrice: oldPrice ? oldPrice.textContent.trim() : \"Not available\",\n reviews: reviews ? parseInt(reviews.textContent.match(/\\d+/)[0]) : \"Not available\",\n });\n }\n\n return results;\n}\n\nfunction displayResults(results) {\n const table = document.createElement(\"table\");\n const header = document.createElement(\"tr\");\n\n header.innerHTML = `\n  Marketplace |\n Buy Box Price |\n Old Price |\n Reviews |\n `;\n table.appendChild(header);\n\n for (const result of results) {\n const row = document.createElement(\"tr\");\n row.innerHTML = `\n  ${result.marketplace} |\n ${result.buyBoxPrice} |\n ${result.oldPrice} |\n ${result.reviews} |\n `;\n table.appendChild(row);\n }\n document.body.appendChild(table);\n}\n\nfunction displayError(message) {\n const errorElement = document.createElement(\"p\");\n errorElement.textContent = message;\n document.body.appendChild(errorElement);\n}\n\nfunction displayLoading(isLoading) {\n const loadingElement = document.getElementById(\"loading\");\n loadingElement.style.display = isLoading ? \"block\" : \"none\";\n}\n\nasync function getFromCache(asin) {\n return new Promise((resolve) => {\n chrome.storage.local.get([asin], (result) => {\n const data = result[asin];\n if (data && Date.now() - data.timestamp < 12 \\* 60 \\* 60 \\* 1000) {\n resolve(data.results);\n } else {\n resolve(null);\n }\n });\n });\n}\n\nfunction saveToCache(asin, results) {\n const data = {\n timestamp: Date.now(),\n results,\n };\n chrome.storage.local.set({ [asin]: data });\n}"
+  },
+  {
+    "from": "human",
+    "value": "here is the old code, can you update it with the good css selectors for buy box price and old price ?"
+  },
+  { "from": "human", "value": "continue" },
+  {
+    "from": "human",
+    "value": "i need the full js code so that I can copy and paste. Can you please write the full js code"
+  },
+  {
+    "from": "human",
+    "value": "can you please continue the writing of the js code so that I have the full version"
+  },
+  {
+    "from": "human",
+    "value": "I want you to continue the writing of this code : document.addEventListener(\"DOMContentLoaded\", async () => {\n const asin = await getASIN();\n if (!asin) {\n displayError(\"ASIN not found.\");\n return;\n }\n\n const cachedData = await getFromCache(asin);\n if (cachedData) {\n displayResults(cachedData);\n } else {\n displayLoading(true);\n const results = await fetchPriceAndReviews(asin);\n displayResults(results);\n saveToCache(asin, results);\n displayLoading(false);\n }\n});\n\nasync function getASIN() {\n return new Promise((resolve) => {\n chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {\n const tab = tabs[0];\n const asin = tab.url.match(/\\/dp\\/([A-Z0-9]{10})/);\n resolve(asin ? asin[1] : null);\n });\n });\n}\n\nasync function fetchPriceAndReviews(asin) {\n const marketplaces = [\n {\n domain: \"amazon.com\",\n flag: \"\ud83c\uddfa\ud83c\uddf8\",\n },\n {\n domain: \"amazon.co.uk\",\n flag: \"\ud83c\uddec\ud83c\udde7\",\n },\n {\n domain: \"amazon.de\",\n flag: \"\ud83c\udde9\ud83c\uddea\",\n },\n {\n domain: \"amazon.fr\",\n flag: \"\ud83c\uddeb\ud83c\uddf7\",\n },\n {\n domain: \"amazon.it\",\n flag: \"\ud83c\uddee\ud83c\uddf9\",\n },\n {\n domain: \"amazon.es\",\n flag: \"\ud83c\uddea\ud83c\uddf8\",\n },\n {\n domain: \"amazon.ca\",\n flag: \"\ud83c\udde8\ud83c\udde6\",\n },\n ];\n\n const results = [];\n\n for (const marketplace of marketplaces) {\n const url = `https://${marketplace.domain}/dp/${asin}`;\n const response = await fetch(url);\n const text = await response.text();\n const parser = new DOMParser();\n const doc = parser.parseFromString(text, \"text/html\");\n\n const buyBoxPrice = doc.querySelector(\"#price\\_inside\\_buybox, #priceblock\\_ourprice, #priceblock\\_dealprice\");\n const oldPrice = doc.querySelector(\".priceBlockStrikePriceString, .priceBlockSavingsString\");\n const reviews = doc.querySelector(\"#acrCustomerReviewText\");\n\n results.push({\n marketplace: `${marketplace.flag} ${marketplace.domain}`,\n buyBoxPrice: buyBoxPrice ? buyBoxPrice.textContent.trim() : \"Not available\",\n oldPrice: oldPrice ? oldPrice.textContent.trim() : \"Not available\",\n reviews: reviews ? parseInt(reviews.textContent.match(/\\d+/)[0]) : \"Not available\",\n });\n }\n\n return results;\n}\n\nfunction displayResults(results) {\n const table = document.createElement(\"table\");\n const header = document.createElement(\"tr\");\n\n header.innerHTML = `\n  Marketplace |\n Buy Box Price |\n Old Price |\n Reviews |\n `;\n table.appendChild(header);\n\n for (const result of results) {\n const row = document.createElement(\"tr\");\n row.innerHTML = `\n  ${result.marketplace} |\n ${result.buyBoxPrice} |\n ${result.oldPrice} |\n ${result.reviews} |\n `;\n table.appendChild(row);\n }\n document.body.appendChild(table);\n}\n\nfunction displayError(message) {\n const errorElement = document.createElement(\"p"
+  },
+  {
+    "from": "human",
+    "value": "the code has been interrupted. Do you understand ?"
+  },
+  {
+    "from": "human",
+    "value": "document.addEventListener(\"DOMContentLoaded\", async () => {\n const asin = await getASIN();\n if (!asin) {\n displayError(\"ASIN not found.\");\n return;\n }\n\n const cachedData = await getFromCache(asin);\n if (cachedData) {\n displayResults(cachedData);\n } else {\n displayLoading(true);\n const results = await fetchPriceAndReviews(asin);\n displayResults(results);\n saveToCache(asin, results);\n displayLoading(false);\n }\n});\n\nasync function getASIN() {\n return new Promise((resolve) => {\n chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {\n const tab = tabs[0];\n const asin = tab.url.match(/\\/dp\\/([A-Z0-9]{10})/);\n resolve(asin ? asin[1] : null);\n });\n });\n}\n\nasync function fetchPriceAndReviews(asin) {\n const marketplaces = [\n {\n domain: \"amazon.com\",\n flag: \"\ud83c\uddfa\ud83c\uddf8\",\n },\n {\n domain: \"amazon.co.uk\",\n flag: \"\ud83c\uddec\ud83c\udde7\",\n },\n {\n domain: \"amazon.de\",\n flag: \"\ud83c\udde9\ud83c\uddea\",\n },\n {\n domain: \"amazon.fr\",\n flag: \"\ud83c\uddeb\ud83c\uddf7\",\n },\n {\n domain: \"amazon.it\",\n flag: \"\ud83c\uddee\ud83c\uddf9\",\n },\n {\n domain: \"amazon.es\",\n flag: \"\ud83c\uddea\ud83c\uddf8\",\n },\n {\n domain: \"amazon.ca\",\n flag: \"\ud83c\udde8\ud83c\udde6\",\n },\n ];\n\n const results = [];\n\n for (const marketplace of marketplaces) {\n const url = `https://${marketplace.domain}/dp/${asin}`;\n const response = await fetch(url);\n const text = await response.text();\n const parser = new DOMParser();\n const doc = parser.parseFromString(text, \"text/html\");\n\n const buyBoxPrice = doc.querySelector(\"#price\\_inside\\_buybox, #priceblock\\_ourprice, #priceblock\\_dealprice\");\n const oldPrice = doc.querySelector(\".priceBlockStrikePriceString, .priceBlockSavingsString, .a-text-price\");\n const reviews = doc.querySelector(\"#acrCustomerReviewText\");\n\n results.push({\n marketplace: `${marketplace.flag} ${marketplace.domain}`,\n buyBoxPrice: buyBoxPrice ? buyBoxPrice.textContent.trim() : \"Not available\",\n oldPrice: oldPrice ? oldPrice.textContent.trim() : \"Not available\",\n reviews: reviews ? parseInt(reviews.textContent.match(/\\d+/)[0]) : \"Not available\",\n });\n }\n\n return results;\n}\n\nfunction displayResults(results) {\n const table = document.createElement(\"table\");\n const header = document.createElement(\"tr\");\n\n header.innerHTML = `\n  Marketplace |\n Buy Box Price |\n Old Price |\n Reviews |\n `;\n table.appendChild(header);\n\n for (const result of results) {\n const row = document.createElement(\"tr\");\n row.innerHTML = `\n  ${result.marketplace} |\n ${result.buyBoxPrice} |\n ${result.oldPrice} |\n ${result.reviews} |\n `;\n table.appendChild(row);\n }\n document.body.appendChild(table);\n}\n\nfunction displayError(message) {\n const errorElement = document.createElement(\"p\");\n errorElement.textContent = message;"
+  },
+  {
+    "from": "human",
+    "value": "I need to make some changes. First \"Markeplaces\" column remains the same. I don't want to see anymore Buy box price and Old price. I just want to see the actual selling price. And to add a new column with the percentage of rebate if there is one (css : .savingsPercentage). The last column remains the same with the number of reviews"
+  },
+  { "from": "human", "value": "the code has been interupted" },
+  {
+    "from": "human",
+    "value": "the code has been interupted. do you understand ?"
+  },
+  {
+    "from": "human",
+    "value": "document.addEventListener(\"DOMContentLoaded\", async () => {\n const asin = await getASIN();\n if (!asin) {\n displayError(\"ASIN not found.\");\n return;\n }\n\n const cachedData = await getFromCache(asin);\n if (cachedData) {\n displayResults(cachedData);\n } else {\n displayLoading(true);\n const results = await fetchPriceAndReviews(asin);\n displayResults(results);\n saveToCache(asin, results);\n displayLoading(false);\n }\n});\n\nasync function getASIN() {\n return new Promise((resolve) => {\n chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {\n const tab = tabs[0];\n const asin = tab.url.match(/\\/dp\\/([A-Z0-9]{10})/);\n resolve(asin ? asin[1] : null);\n });\n });\n}\n\nasync function fetchPriceAndReviews(asin) {\n const marketplaces = [\n {\n domain: \"amazon.com\",\n flag: \"\ud83c\uddfa\ud83c\uddf8\",\n },\n {\n domain: \"amazon.co.uk\",\n flag: \"\ud83c\uddec\ud83c\udde7\",\n },\n {\n domain: \"amazon.de\",\n flag: \"\ud83c\udde9\ud83c\uddea\",\n },\n {\n domain: \"amazon.fr\",\n flag: \"\ud83c\uddeb\ud83c\uddf7\",\n },\n {\n domain: \"amazon.it\",\n flag: \"\ud83c\uddee\ud83c\uddf9\",\n },\n {\n domain: \"amazon.es\",\n flag: \"\ud83c\uddea\ud83c\uddf8\",\n },\n {\n domain: \"amazon.ca\",\n flag: \"\ud83c\udde8\ud83c\udde6\",\n },\n ];\n\n const results = [];\n\n for (const marketplace of marketplaces) {\n const url = `https://${marketplace.domain}/dp/${asin}`;\n const response = await fetch(url);\n const text = await response.text();\n const parser = new DOMParser();\n const doc = parser.parseFromString(text, \"text/html\");\n\n const sellingPrice = doc.querySelector(\"#priceblock\\_ourprice, #priceblock\\_dealprice\");\n const percentageRebate = doc.querySelector(\".savingsPercentage\");\n const reviews = doc.querySelector(\"#acrCustomerReviewText\");\n\n results.push({\n marketplace: `${marketplace.flag} ${marketplace.domain}`,\n sellingPrice: sellingPrice ? sellingPrice.textContent.trim() : \"Not available\",\n percentageRebate: percentageRebate ? percentageRebate.textContent.trim() : \"Not available\",\n reviews: reviews ? parseInt(reviews.textContent.match(/\\d+/)[0]) : \"Not available\",\n });\n }\n\n return results;\n}\n\nfunction displayResults(results) {\n const table = document.createElement(\"table\");\n const header = document.createElement(\"tr\");\n\n header.innerHTML = `\n  Marketplace |\n Selling Price |\n Percentage Rebate |\n Reviews |\n `;\n table.appendChild(header);\n\n for (const result of results) {\n const row = document.createElement(\"tr\");\n row.innerHTML = `\n  ${result.marketplace} |\n ${result.sellingPrice} |\n ${result.percentageRebate} |\n ${result.reviews} |\n `;\n table.appendChild(row);\n }\n document.body.appendChild(table);\n}\n\nfunction displayError(message) {\n const errorElement = document.createElement(\"p\");\n errorElement.textContent = message;\n\n document.body.appendChild(errorElement);\n}\n\nfunction displayLoading(isLoading"
+  },
+  {
+    "from": "human",
+    "value": "you have been interupted. Do you have the possibility to continue the writing of the code from where you have interupted ?"
+  },
+  {
+    "from": "human",
+    "value": "comment puis je acc\u00e9cer \u00e0 l'API amazon advertising ?"
+  },
+  { "from": "human", "value": "I wan't to come back with GPT4" },
+  {
+    "from": "human",
+    "value": "What are the components of a time series dataset?"
+  },
+  {
+    "from": "human",
+    "value": "Create a time series dataset with weekly intervals between 2012-01-01 and 2012-02-31. Use the Sunday date for the time stamp."
+  },
+  { "from": "human", "value": "Output as a csv" },
+  { "from": "human", "value": "give me 3 years worth of data" },
+  {
+    "from": "human",
+    "value": "Instead of weekly, use monthly intervals and don\u2019t skip months."
+  },
+  {
+    "from": "human",
+    "value": "From now on, always output as a csv delimited by a comma in a code block. Now include summer seasonality."
+  },
+  { "from": "human", "value": "Include a positive trend" },
+  {
+    "from": "human",
+    "value": "Interpret the regression statistics below:\nRegression Statistics \nMultiple R 0.983840293 \nR Square 0.967941722 \nAdjusted R Square 0.958782213 \nStandard Error 229390.3205 \nObservations 10 \n \nANOVA \n df SS MS F Significance F \nRegression 2 1.11213E+13 5.56067E+12 105.6761684 5.89917E-06 \nResidual 7 3.68339E+11 52619919134 \nTotal 9 1.14897E+13 \n \n Coefficients Standard Error t Stat P-value Lower 95% Upper 95% Lower 95.0% Upper 95.0%\nIntercept 310055.0534 483971.7741 0.640646976 0.542147832 -834356.3408 1454466.448 -834356.3408 1454466.448\nEmployee Count -60461.95689 19894.68211 -3.039101432 0.018870807 -107505.4047 -13418.5091 -107505.4047 -13418.5091\nStore Square Footage 91.18363601 17.59860205 5.181299955 0.001279055 49.56955481 132.7977172 49.56955481 132.7977172"
+  },
+  {
+    "from": "human",
+    "value": "Create a case study based on the job description below. Include discussion questions. I want you to ask questions before creating the case study to ensure your understanding.\n\nJob Description:\nResponsibilities\nTikTok is the leading destination for short-form mobile video. Our mission is to inspire creativity and bring joy. TikTok has global offices including Los Angeles, New York, London, Paris, Berlin, Dubai, Singapore, Jakarta, Seoul and Tokyo.\n\nWhy Join Us\nAt TikTok, our people are humble, intelligent, compassionate and creative. We create to inspire - for you, for us, and for more than 1 billion users on our platform. We lead with curiosity and aim for the highest, never shying away from taking calculated risks and embracing ambiguity as it comes. Here, the opportunities are limitless for those who dare to pursue bold ideas that exist just beyond the boundary of possibility. Join us and make impact happen with a career at TikTok.\n\nThe commerce industry has seen tremendous growth in recent years and has become a hotly contested space amongst leading Internet companies, and its future growth cannot be underestimated. With millions of loyal users globally, we believe TikTok is an ideal platform to deliver a brand new and better commerce experience to our users. We are looking for passionate and talented people to join our product and operations team, together we can build an commerce ecosystem that is innovative, secure and intuitive for our users.\n\nWhat You'll Do\nResponsible for data analysis of e-commerce overseas operation strategy including Merchant Strategy, Creator Strategy, etc.\nDescribe the situation of businesses, explain the fluctuations of business and provide valuable suggestions with reports.\nDesign the monitoring systems independently to reflect any changes of business in time\nCooperate with Ops team to set strategy, e.g. finding potential creators, measuring LTV of users, figuring out the growth strategy of merchants, etc.\nFollow up the data analysis of local operation teams in several overseas markets, support the operation effect and give the follow-up optimization suggestions;\nCooperate with PM/Ops/R&D team, promote the implementation of optimization scheme, and bring about the actual improvement and growth of business\nQualifications\nWho We're Looking For\nBachelor degree or above, major in mathematics, statistics, computer science is preferred; or major in science or engineering or engaged in data statistics, analysis, modeling related working areas after graduation\nProficient in SQL and tableau and familiar with Python or R for data analysis.\nAt least 3 years of working experience in data analysis, and have a good business sense in e-commerce\nOverseas working experience or analytical experience is preferred\nAble to complete English reports and communicate with global staff independently\nHave a strong learning ability and curiosity; familiar with starting a new business; able to lead a small project team to support business\nHave a strong ability to work under pressure, have the courage to overcome difficulties and accept challenges"
+  },
+  {
+    "from": "human",
+    "value": "Answer each question for me. Don\u2019t create the case study just yet."
+  },
+  {
+    "from": "human",
+    "value": "Use these answers for the case study. Create a real-world scenario that the data analyst may encounter for the case study. Write in the style of a Harvard business case study. Define the business problem in the form of a question and do not use a generalized problem. Make the problem as specific as possible. You can even make up numbers. Do not provide a solution."
+  },
+  {
+    "from": "human",
+    "value": "Create a sample dataset to match the case study."
+  },
+  {
+    "from": "human",
+    "value": "Add features to the dataset that may be good candidates for supervised machine learning."
+  },
+  {
+    "from": "human",
+    "value": "Using this data as inspiration for possible values, give me the Python code so I can create a synthetic dataset of 1,000 rows."
+  },
+  {
+    "from": "human",
+    "value": "Incorporate issues 1-4 into the Python code to generate the data set."
+  },
+  { "from": "human", "value": "Ensure there are duplicates" },
+  { "from": "human", "value": "How many possible duplicates will appear?" },
+  { "from": "human", "value": "What I meant by duplicates is duplicate rows" },
+  {
+    "from": "human",
+    "value": "What kind of data available via an API can enrich the dataset to support the case study\u2019s business problem?"
+  },
+  {
+    "from": "human",
+    "value": "Where can I get product review data via an API?"
+  },
+  {
+    "from": "human",
+    "value": "How would I request the reviews for a retail merchant from the Yelp Fusion API in Python? Only use the requests and json libraries."
+  },
+  {
+    "from": "human",
+    "value": "Give me the python code to scrape the text that starts with \u201cThis is one of our first\u201d from this html:\n[![](https://media-cdn.tripadvisor.com/media/photo-t/1a/f6/e9/ef/default-avatar-2020-66.jpg)](/Profile/380kurtt)[Kurt T](/Profile/380kurtt) wrote a review May 20222 contributions1 helpful vote![](https://dynamic-media-cdn.tripadvisor.com/media/photo-o/23/59/22/4b/the-hotel-entrance-invites.jpg?w=1200&h=200&s=1)[Always a treat to stay here!](/ShowUserReviews-g31352-d324197-r837715141-El_Portal_Sedona_Hotel-Sedona_Arizona.html)This is one of our first trips out since COVID hit, and the hotel was as terrific as ever. We love the feeling of seclusion this place has even though it is right in the heart of the arts district. As we sat in the shaded courtyard, it was so relaxing to hear all the small birds and the breeze rustling the shade trees. An oasis in the desert. Our room was so comfortable (as all the ones we've stayed in have been). We slept soundly. Waking up to having a generous continental breakfast (great coffee, pastries, muffins, toast, yogurt) out in the great room started the morning right. Despite the privacy and seclusion that El Portal offers, we also were able to meet and make friends with some wonderful guests. The smiles on everyone's face say it all. Hated to leave, but we'll be back.\u2026Read moreDate of stay: May 2022LocationServiceSleep QualityThis review is the subjective opinion of a Tripadvisor member and not of Tripadvisor LLC. Tripadvisor performs checks on reviews.1 Helpful voteHelpfulShare Response from Cindy Woudenberg, Agency / Consultant at El Portal Sedona HotelResponded May 9, 2022Thank you for the great review! Hope to see you again soon, Kurt! Read moreThis response is the subjective opinion of the management representative and not of Tripadvisor LLC."
+  },
+  { "from": "human", "value": "continue" },
+  {
+    "from": "human",
+    "value": "Here\u2019s the updated html:\nThis is one of our first trips out since COVID hit, and the hotel was as terrific as ever. We love the feeling of seclusion this place has even though it is right in the heart of the arts district. As we sat in the shaded courtyard, it was so relaxing to hear all the small birds and the breeze rustling the shade trees. An oasis in the desert. Our room was so comfortable (as all the ones we've stayed in have been). We slept soundly. Waking up to having a generous continental breakfast (great coffee, pastries, muffins, toast, yogurt) out in the great room started the morning right. Despite the privacy and seclusion that El Portal offers, we also were able to meet and make friends with some wonderful guests. The smiles on everyone's face say it all. Hated to leave, but we'll be back.Read moreRead lessDate of stay: May 2022LocationServiceSleep QualityThis review is the subjective opinion of a Tripadvisor member and not of Tripadvisor LLC. Tripadvisor performs checks on reviews.1 Helpful voteHelpfulShare Response from Cindy Woudenberg, Agency / Consultant at El Portal Sedona HotelResponded May 9, 2022Thank you for the great review! Hope to see you again soon, Kurt! Read moreThis response is the subjective opinion of the management representative and not of Tripadvisor LLC."
+  },
+  {
+    "from": "human",
+    "value": "Give me the python code to scrape the review text from this html code:\nThis is one of our first trips out since COVID hit, and the hotel was as terrific as ever. We love the feeling of seclusion this place has even though it is right in the heart of the arts district. As we sat in the shaded courtyard, it was so relaxing to hear all the small birds and the breeze rustling the shade trees. An oasis in the desert. Our room was so comfortable (as all the ones we've stayed in have been). We slept soundly. Waking up to having a generous continental breakfast (great coffee, pastries, muffins, toast, yogurt) out in the great room started the morning right. Despite the privacy and seclusion that El Portal offers, we also were able to meet and make friends with some wonderful guests. The smiles on everyone's face say it all. Hated to leave, but we'll be back.Read moreRead lessDate of stay: May 2022LocationServiceSleep QualityThis review is the subjective opinion of a Tripadvisor member and not of Tripadvisor LLC. Tripadvisor performs checks on reviews.1 Helpful voteHelpfulShare Response from Cindy Woudenberg, Agency / Consultant at El Portal Sedona HotelResponded May 9, 2022Thank you for the great review! Hope to see you again soon, Kurt! Read moreThis response is the subjective opinion of the management representative and not of Tripadvisor LLC."
+  },
+  {
+    "from": "human",
+    "value": "Write the python code to web scrape the review text from this html:\nThis is one of our first trips out since COVID hit, and the hotel was as terrific as ever. We love the feeling of seclusion this place has even though it is right in the heart of the arts district. As we sat in the shaded courtyard, it was so relaxing to hear all the small birds and the breeze rustling the shade trees. An oasis in the desert. Our room was so comfortable (as all the ones we've stayed in have been). We slept soundly. Waking up to having a generous continental breakfast (great coffee, pastries, muffins, toast, yogurt) out in the great room started the morning right. Despite the privacy and seclusion that El Portal offers, we also were able to meet and make friends with some wonderful guests. The smiles on everyone's face say it all. Hated to leave, but we'll be back."
+  },
+  { "from": "human", "value": "Create a data dictionary for the dataset" },
+  {
+    "from": "human",
+    "value": "Here\u2019s some sample data for the data dictionary:\n| User ID | Region | Date Joined | Last Active | Product Viewed | Product Purchased | Gender | Age | Income | Marital Status | Education | Product Category |\n|---------|--------|-------------|-------------|----------------|-------------------|--------|-----|--------|----------------|-----------|------------------|\n| 1 | US | 2022-01-01 | 2022-02-15 | T-Shirt | T-Shirt | Male | 25 | 50000 | Single | College | Clothing |\n| 2 | US | 2022-01-01 | 2022-02-15 | Hoodie | | Female | 35 | 75000 | Married | Graduate | Clothing |"
+  },
+  { "from": "human", "value": "Include data types" },
+  { "from": "human", "value": "Write me the DDL for a mysql table" },
+  {
+    "from": "human",
+    "value": "Write me python code to count duplicates and missing values"
+  },
+  {
+    "from": "human",
+    "value": "Explain this python code. Take me step by step.\nCode: missing = df.isna().sum().sum()"
+  },
+  { "from": "human", "value": "Show me sample results of each step" },
+  {
+    "from": "human",
+    "value": "Perform EDA in python based on this schema:\nCREATE TABLE user\\_activity (\n user\\_id INT NOT NULL,\n region VARCHAR(50),\n date\\_joined DATE,\n last\\_active DATE,\n product\\_viewed VARCHAR(50),\n product\\_purchased VARCHAR(50),\n gender VARCHAR(10),\n age INT,\n income INT,\n marital\\_status VARCHAR(20),\n education VARCHAR(50),\n product\\_category VARCHAR(50),\n PRIMARY KEY (user\\_id)\n);"
+  },
+  {
+    "from": "human",
+    "value": "Use sqlalchemy to connect to the database instead"
+  },
+  {
+    "from": "human",
+    "value": "Interpret the results for a non-technical audience. Provide business insights and recommendations based on these regression statistics:\nRegression Statistics \nMultiple R 0.983865453 \nR Square 0.96799123 \nAdjusted R Square 0.951986845 \nStandard Error 247578.4706 \nObservations 10 \n \nANOVA \n df SS MS F Significance F \nRegression 3 1.11219E+13 3.7073E+12 60.48287639 7.08723E-05 \nResidual 6 3.67771E+11 61295099122 \nTotal 9 1.14897E+13 \n \n Coefficients Standard Error t Stat P-value Lower 95% Upper 95% Lower 95.0% Upper 95.0%\nIntercept 263635.8626 710653.4175 0.370976704 0.723400757 -1475270.407 2002542.132 -1475270.407 2002542.132\nEmployee Count -59790.16189 22576.14379 -2.648377971 0.038111141 -115031.9957 -4548.328101 -115031.9957 -4548.328101\nStore Square Footage 90.40849653 20.62800794 4.38280307 0.004654063 39.93357943 140.8834136 39.93357943 140.8834136\nHours Open Per Day 4270.217359 44326.97522 0.096334508 0.926392042 -104193.9836 112734.4184 -104193.9836 112734.4184"
+  },
+  {
+    "from": "human",
+    "value": "Recommend visualizations to help communicate the results."
+  },
+  {
+    "from": "human",
+    "value": "Include the independent variable names in your visualization recommendations."
+  },
+  {
+    "from": "human",
+    "value": "Create 2 slides out this text. Use an action-oriented, takeaway title and bullets that will fit on one line. Text:\nGood news! Based on the regression statistics we analyzed, we found a strong positive relationship between the performance of our stores and the employee count and store square footage. This means that increasing the number of employees and expanding the size of the stores could lead to higher sales growth. However, we also found that the hours open per day did not have a statistically significant impact on store performance. Therefore, we recommend that we focus on hiring more employees and/or expanding the size of the stores to boost sales growth.\n\nIn terms of cost reduction, we found that the employee count has a negative relationship with the performance of our stores, which means that having fewer employees could lead to lower costs. However, we also found that reducing the number of employees could hurt sales growth, so we need to strike a balance between cost reduction and sales growth. Moreover, the store square footage has a positive relationship with store performance, which means that reducing store size could hurt sales growth. Therefore, we recommend that we focus on optimizing the employee count and store size to achieve a balance between cost reduction and sales growth.\""
+  },
+  {
+    "from": "human",
+    "value": "Write a Python regex to extract the salary range from this text: \n$153,000 - $296,000 a year"
+  },
+  { "from": "human", "value": "Remove the dollar signs and commas" },
+  {
+    "from": "human",
+    "value": "Explain this excel formula:\n=+IF($A2=0,0,IF($B2<4264,0,IF(AND($B2>=4264,$B2<=4895),\n(-22.31\\*$C2/365),IF(AND($B2>=4895,$B2<=32760),($B2\\*0.093-\n476.89)\\*$C2/365,IF($B2>32760,($B2\\*0.128-1623.49)\\*$C2/365)))))"
+  },
+  {
+    "from": "human",
+    "value": "Explain this excel formula: =SUM(B4:OFFSET(B4,0,E2-1))"
+  },
+  {
+    "from": "human",
+    "value": "Explain this excel: =OR([@QuantityOrdered]Limits[Upper Limit])"
+  },
+  {
+    "from": "human",
+    "value": "Comment and explain this SQL:\nSELECT COUNT(\\*) AS CategoryCount\nFROM\n(\n SELECT \n CategoryDescription, \n COUNT(\\*) AS ProductCount,\n (\n SELECT AVG(ProductCount)\n FROM\n (\n SELECT CategoryDescription, COUNT(\\*) AS ProductCount\n FROM Products\n JOIN Categories\n ON Products.CategoryID = Categories.CategoryID \n GROUP BY CategoryDescription \n ORDER BY ProductCount DESC\n ) AS ProductCountsByCategory\n ) AS AvgProductCount\n FROM Products\n JOIN Categories\n ON Products.CategoryID = Categories.CategoryID \n GROUP BY CategoryDescription\n HAVING ProductCount > AvgProductCount\n) AS ProductCountGreaterThanAvg;"
+  },
+  { "from": "human", "value": "Optimize the SQL for readability" },
+  { "from": "human", "value": "Optimize for performance" },
+  { "from": "human", "value": "Rewrite with CTEs instead of subqueries" },
+  {
+    "from": "human",
+    "value": "What is this line doing? JOIN AvgProductCount ON 1=1"
+  },
+  {
+    "from": "human",
+    "value": "What would a data request look like for this query if it was request via email from a non-technical inventory manager?"
+  },
+  {
+    "from": "human",
+    "value": "What is this asking for?\nThe inventory coordinator wants to reduce the inventory holding cost by comparing the wholesale pricing for products \nsupplied by 3 or more vendors. The inventory coordinator will renegotiate or sever ties with the most expensive vendor.\nGenerate a report to help the inventory coordinator."
+  },
+  { "from": "human", "value": "Let's play tic tac toe" },
+  { "from": "human", "value": "2" },
+  { "from": "human", "value": "5" },
+  { "from": "human", "value": "I win already" },
+  { "from": "human", "value": "but clearly next move I will win right?" },
+  { "from": "human", "value": "what is I put mine at number 8?" },
+  { "from": "human", "value": "your turn? I won already" },
+  {
+    "from": "human",
+    "value": "I want to play an improved version of tic tac toe where each player has small, medium, big three different sizes of chip, the bigger chip can overwrite the smaller chip."
+  },
+  { "from": "human", "value": "5 S" },
+  { "from": "human", "value": "8 M" },
+  { "from": "human", "value": "2 S" },
+  { "from": "human", "value": "I win already" },
+  { "from": "human", "value": "5 M" },
+  {
+    "from": "human",
+    "value": "Can I change the rule of the game? Just three in a row can win, don't need to be the same size."
+  },
+  {
+    "from": "human",
+    "value": "Is there a faster alternative to Dijkstra if all edge weights are 1?"
+  },
+  { "from": "human", "value": "Continue from the begging of the table" },
+  {
+    "from": "human",
+    "value": "which journal is similar to communications medicine?"
+  },
+  {
+    "from": "human",
+    "value": "I am preparing for an interview as a Junior Policy assistant at ISED (Innovation, Science and Economic Development Canada) with the job description, provided below. Please give me some interview questions to prepare with:\nWhen the COVID-19 pandemic began, it highlighted the critical need to boost Canada's domestic biomanufacturing and life sciences industry, to strengthen development and production of vaccines, therapeutics and other medicines in Canada. The Government of Canada is now focused on building back better to protect Canadians through the current pandemic and beyond, and to strengthen the sector and drive economic growth.\nhttps://ised-isde.canada.ca/site/biomanufacturing/en\nStudent role:\nStudents would be assisting officials with research and analysis to support project assessments for company proposals to grow Canada's Life Sciences and Biomanufacturing Sector.\nStrong research skills, an ability to manage multiple priorities, perform quick turn around requests and a curiosity about\nthe biomanufacturing industry are assets.\nExperience in a life sciences program also an asset."
+  },
+  {
+    "from": "human",
+    "value": "What are some insightful followup questions I should ask the interviewer"
+  },
+  { "from": "human", "value": "write a sentence about snow that ends with s" },
+  {
+    "from": "human",
+    "value": "can you give me an example of a word with the letters t, p and a"
+  },
+  { "from": "human", "value": "another with the letter s" },
+  { "from": "human", "value": "add the letter w to the mix" },
+  { "from": "human", "value": "add the letter d" },
+  { "from": "human", "value": "one more, add the letter c" },
+  { "from": "human", "value": "no d?" },
+  { "from": "human", "value": "give me a funny gen z joke" },
+  { "from": "human", "value": "more gen z things" },
+  { "from": "human", "value": "now make a joke using many tiktok trends" },
+  {
+    "from": "human",
+    "value": "give me a joke that involves my friend ava, a goat and a mistaken doctor"
+  },
+  {
+    "from": "human",
+    "value": "give me a paragraph as to why my friend ava should give me one of her goldfish crackers"
+  },
+  {
+    "from": "human",
+    "value": "can you give me a story about me, Solena, written from an omniscient perspective, about my normal day in grade 10 high school in Thunder Bay, Ontario"
+  },
+  { "from": "human", "value": "should i rent a car or uber in okinawa" },
+  {
+    "from": "human",
+    "value": "I am installing cooler package in macos using pip install, but it failed with error message: Could not find HDF5 installation. How could I solve this installation issue?"
+  },
+  {
+    "from": "human",
+    "value": "How to implement 2 factor authentication in my node js app?"
+  },
+  { "from": "human", "value": "How to do it using email?" },
+  {
+    "from": "human",
+    "value": "when trying to run the code below in jupyter notebook i get an error\n\nCODE:\n'''\ncols = 2\nrows = math.ceil(len(sorted\\_interesting\\_tokens) / cols)\nfig, axes = plt.subplots(rows, cols, figsize=(cols\\*5, rows\\*3))\nfor ix, token in enumerate(sorted\\_interesting\\_tokens):\n\n bigram\\_df = bigram\\_dfs[token]\n\n t\\_adf = copy.deepcopy(activation\\_df.query('token==@token'))\n t\\_adf['prefix'] = activation\\_df.loc[t\\_adf.index.values - 1, 'token'].values\n\n valid\\_prefix\\_tokens = set(bigram\\_dfs[token].index.values)\n token\\_strs = [decoded\\_vocab[t] for t in valid\\_prefix\\_tokens]\n\n ax = axes[ix//2, ix%2]\n sns.boxplot(t\\_adf, x='prefix', y='activation', order=bigram\\_dfs[token].index.values, ax=ax)\n ax.set\\_xticklabels([decoded\\_vocab[int(t.get\\_text())].replace('$', '\\$') for t in ax.get\\_xticklabels()], rotation=80);\n ax.set\\_title(f'Activations for {token}: \"{decoded\\_vocab[token]}\" by preceding token')\nplt.tight\\_layout(pad=0)\n'''\n\nERROR:\n'''\n/state/partition1/slurm\\_tmp/22129042.0.0/ipykernel\\_16294/4186583921.py:20: UserWarning: Glyph 12290 (\\N{IDEOGRAPHIC FULL STOP}) missing from current font.\n plt.tight\\_layout(pad=0)\n/state/partition1/slurm\\_tmp/22129042.0.0/ipykernel\\_16294/4186583921.py:20: UserWarning: Glyph 12289 (\\N{IDEOGRAPHIC COMMA}) missing from current font.\n plt.tight\\_layout(pad=0)\n/state/partition1/slurm\\_tmp/22129042.0.0/ipykernel\\_16294/4186583921.py:20: UserWarning: Glyph 12395 (\\N{HIRAGANA LETTER NI}) missing from current font.\n plt.tight\\_layout(pad=0)\n/state/partition1/slurm\\_tmp/22129042.0.0/ipykernel\\_16294/4186583921.py:20: UserWarning: Glyph 12394 (\\N{HIRAGANA LETTER NA}) missing from current font.\n plt.tight\\_layout(pad=0)\n/state/partition1/slurm\\_tmp/22129042.0.0/ipykernel\\_16294/4186583921.py:20: UserWarning: Glyph 65292 (\\N{FULLWIDTH COMMA}) missing from current font.\n plt.tight\\_layout(pad=0)\n/state/partition1/slurm\\_tmp/22129042.0.0/ipykernel\\_16294/4186583921.py:20: UserWarning: Glyph 12398 (\\N{HIRAGANA LETTER NO}) missing from current font.\n plt.tight\\_layout(pad=0)\n/state/partition1/slurm\\_tmp/22129042.0.0/ipykernel\\_16294/4186583921.py:20: UserWarning: Glyph 12356 (\\N{HIRAGANA LETTER I}) missing from current font.\n plt.tight\\_layout(pad=0)\n/state/partition1/slurm\\_tmp/22129042.0.0/ipykernel\\_16294/4186583921.py:20: UserWarning: Glyph 20363 (\\N{CJK UNIFIED IDEOGRAPH-4F8B}) missing from current font.\n plt.tight\\_layout(pad=0)\n/state/partition1/slurm\\_tmp/22129042.0.0/ipykernel\\_16294/4186583921.py:20: UserWarning: Glyph 9 ( ) missing from current font.\n plt.tight\\_layout(pad=0)\n/state/partition1/slurm\\_tmp/22129042.0.0/ipykernel\\_16294/4186583921.py:20: UserWarning: Glyph 151 (\\x97) missing from current font.\n plt.tight\\_layout(pad=0)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/events.py:89: UserWarning: Glyph 12290 (\\N{IDEOGRAPHIC FULL STOP}) missing from current font.\n func(\\*args, \\*\\*kwargs)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/events.py:89: UserWarning: Glyph 12289 (\\N{IDEOGRAPHIC COMMA}) missing from current font.\n func(\\*args, \\*\\*kwargs)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/events.py:89: UserWarning: Glyph 12395 (\\N{HIRAGANA LETTER NI}) missing from current font.\n func(\\*args, \\*\\*kwargs)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/events.py:89: UserWarning: Glyph 12394 (\\N{HIRAGANA LETTER NA}) missing from current font.\n func(\\*args, \\*\\*kwargs)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/events.py:89: UserWarning: Glyph 65292 (\\N{FULLWIDTH COMMA}) missing from current font.\n func(\\*args, \\*\\*kwargs)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/events.py:89: UserWarning: Glyph 12398 (\\N{HIRAGANA LETTER NO}) missing from current font.\n func(\\*args, \\*\\*kwargs)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/events.py:89: UserWarning: Glyph 12356 (\\N{HIRAGANA LETTER I}) missing from current font.\n func(\\*args, \\*\\*kwargs)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/events.py:89: UserWarning: Glyph 20363 (\\N{CJK UNIFIED IDEOGRAPH-4F8B}) missing from current font.\n func(\\*args, \\*\\*kwargs)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/events.py:89: UserWarning: Glyph 9 ( ) missing from current font.\n func(\\*args, \\*\\*kwargs)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/events.py:89: UserWarning: Glyph 151 (\\x97) missing from current font.\n func(\\*args, \\*\\*kwargs)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/pylabtools.py:152: UserWarning: Glyph 20363 (\\N{CJK UNIFIED IDEOGRAPH-4F8B}) missing from current font.\n fig.canvas.print\\_figure(bytes\\_io, \\*\\*kw)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/pylabtools.py:152: UserWarning: Glyph 12290 (\\N{IDEOGRAPHIC FULL STOP}) missing from current font.\n fig.canvas.print\\_figure(bytes\\_io, \\*\\*kw)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/pylabtools.py:152: UserWarning: Glyph 12289 (\\N{IDEOGRAPHIC COMMA}) missing from current font.\n fig.canvas.print\\_figure(bytes\\_io, \\*\\*kw)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/pylabtools.py:152: UserWarning: Glyph 12395 (\\N{HIRAGANA LETTER NI}) missing from current font.\n fig.canvas.print\\_figure(bytes\\_io, \\*\\*kw)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/pylabtools.py:152: UserWarning: Glyph 12394 (\\N{HIRAGANA LETTER NA}) missing from current font.\n fig.canvas.print\\_figure(bytes\\_io, \\*\\*kw)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/pylabtools.py:152: UserWarning: Glyph 65292 (\\N{FULLWIDTH COMMA}) missing from current font.\n fig.canvas.print\\_figure(bytes\\_io, \\*\\*kw)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/pylabtools.py:152: UserWarning: Glyph 12398 (\\N{HIRAGANA LETTER NO}) missing from current font.\n fig.canvas.print\\_figure(bytes\\_io, \\*\\*kw)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/pylabtools.py:152: UserWarning: Glyph 12356 (\\N{HIRAGANA LETTER I}) missing from current font.\n fig.canvas.print\\_figure(bytes\\_io, \\*\\*kw)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/pylabtools.py:152: UserWarning: Glyph 9 ( ) missing from current font.\n fig.canvas.print\\_figure(bytes\\_io, \\*\\*kw)\n/home/gridsan/dtroitskii/sparprob/lib/python3.8/site-packages/IPython/core/pylabtools.py:152: UserWarning: Glyph 151 (\\x97) missing from current font.\n fig.canvas.print\\_figure(bytes\\_io, \\*\\*kw)\n''' 451 words 6643 char Copy Text Copy HTML Export PDF Text-Speech Plagiarism Checker Search Trend Bulgarian Chinese Czech Danish Dutch English (US) English (UK) Estonian Finnish French German Greek Hungarian Indonesian Italian Japanese Latvian Lithuanian Polish Portuguese Portuguese (BZ) Romanian Russian Slovak Slovenian Spanish Swedish Turkish Ukrainian"
+  },
+  {
+    "from": "human",
+    "value": "how can i check if noto is installed on my unix server 12 words 54 char Copy Text Copy HTML Export PDF Text-Speech Plagiarism Checker Search Trend Bulgarian Chinese Czech Danish Dutch English (US) English (UK) Estonian Finnish French German Greek Hungarian Indonesian Italian Japanese Latvian Lithuanian Polish Portuguese Portuguese (BZ) Romanian Russian Slovak Slovenian Spanish Swedish Turkish Ukrainian"
+  },
+  {
+    "from": "human",
+    "value": "how to check if a font family is installed on unix 11 words 50 char Copy Text Copy HTML Export PDF Text-Speech Plagiarism Checker Search Trend Bulgarian Chinese Czech Danish Dutch English (US) English (UK) Estonian Finnish French German Greek Hungarian Indonesian Italian Japanese Latvian Lithuanian Polish Portuguese Portuguese (BZ) Romanian Russian Slovak Slovenian Spanish Swedish Turkish Ukrainian"
+  },
+  {
+    "from": "human",
+    "value": "i get an error in my jupyter - findfont: Font family 'Noto Sans' not found. 15 words 75 char Copy Text Copy HTML Export PDF Text-Speech Plagiarism Checker Search Trend Bulgarian Chinese Czech Danish Dutch English (US) English (UK) Estonian Finnish French German Greek Hungarian Indonesian Italian Japanese Latvian Lithuanian Polish Portuguese Portuguese (BZ) Romanian Russian Slovak Slovenian Spanish Swedish Turkish Ukrainian"
+  },
+  {
+    "from": "human",
+    "value": "im getting an error AttributeError: module 'matplotlib.font\\_manager' has no attribute 'rebuild'\n 12 words 96 char Copy Text Copy HTML Export PDF Text-Speech Plagiarism Checker Search Trend Bulgarian Chinese Czech Danish Dutch English (US) English (UK) Estonian Finnish French German Greek Hungarian Indonesian Italian Japanese Latvian Lithuanian Polish Portuguese Portuguese (BZ) Romanian Russian Slovak Slovenian Spanish Swedish Turkish Ukrainian"
+  },
+  {
+    "from": "human",
+    "value": "module 'matplotlib.font\\_manager' has no attribute '\\_rebuild'\n 7 words 61 char Copy Text Copy HTML Export PDF Text-Speech Plagiarism Checker Search Trend Bulgarian Chinese Czech Danish Dutch English (US) English (UK) Estonian Finnish French German Greek Hungarian Indonesian Italian Japanese Latvian Lithuanian Polish Portuguese Portuguese (BZ) Romanian Russian Slovak Slovenian Spanish Swedish Turkish Ukrainian"
+  },
+  {
+    "from": "human",
+    "value": "Let's now assume the guideline text is variable, let's call it gtext. The two categories I want to use are 'follows gtext' or 'does not follow gtext', but I don't know what gtext is. What NLP task can I use?"
+  },
+  {
+    "from": "human",
+    "value": "Is there any HuggingFace model which already has this functionality?"
+  },
+  {
+    "from": "human",
+    "value": "\u8acb\u5e6b\u6211\u7d71\u6574\u4ee5\u4e0b\u9019\u4e9b\u554f\u984c\u7684\u5206\u985e\u6a19\u7c64"
+  },
+  {
+    "from": "human",
+    "value": "(Yamate) Security Audit Checklist: Currently there is no well-defined process to update the checkilist items and ask teams members for cross-review\n\nSome items are outdated, no cross-review, little bit hard to track change history, sharing updates to team members\n\nVersion control with Git, like OSS projects?\n\nCurrent process: https://confluence.rakuten-it.com/confluence/display/ss/How+To+Add+A+New+Vulnerability+Template\n\n(AARON) Too many teams groups\n\nConsolidate Pre-release group chats across Taiwan & JPN\n\nCreate distinct communication channels, appoint specific roles.\n\n(Lena) Audit Requests being sent in the last minute (e.g. Pre-release requests gets sent on 3/10 but QA testing has already concluded on 3/3 and the Dev. team would like the audit to start from the next business day)\n\nAsk QA team to ensure that security audit has been requested as part of the checklist <\u2014 Suggested by Ryan\n\nAdd a note at the top of the request form to note that the request should be sent at least 1 month before the Dev. team\u2019s desired audit start date\n\nAudits with no scope listed \u2192 make it required field?\n\n(Melody) Audit scope definition: We don't have a clear definition of how to calculate target and man days when using GraphQL API, SOAP API or even WebSocket\n\nCurrent definition: https://confluence.rakuten-it.com/confluence/display/ss/Defining+Audit+Scope \n\n(Yamate) Nessus account management\n\nSome auditors are using \u201crecycled\u201d accounts that are originally created for ex-Rakutenians/auditors\n\n(Simon) Security Audit shadow and parallel are not arranged beforehand. Some are added with short notice.\n\nMake sure that Shadow and Parallel auditors are arranged before the kick off starts to ensure they can participate as much as they can.\n\n(Annie) Rescheduling issue\n\nScheduling/Project Manager(Tiger PJM) The most rescheduling issue show that more than 50% of reschedule problems are from ''DEV Team QA/Dev Postpone'' (Ref: Pre-release Security Audit Statistics Report 2022)\n\nScheduling/Project Manager(Tiger PJM If large projects(more than 40man-hours?) reschedule cause other projects can not be arranged at that moment that place resources in a suitable timeframe \n\nBilling/Project Manager(Tiger PJM Need to reduce the issue of resources being occupied and then released when rescheduling. If the billing method of the pre-release audit JP&TW team uses WINES code from April. Is there a chance to receive payment in advance(deposit) to reduce the possibility of changes in the development team?\n\nNewcomers Training Process PJM's newcomers training is not systematic enough \u2014 Suggested by Peter"
+  },
+  { "from": "human", "value": "HI" },
+  {
+    "from": "human",
+    "value": "Based on the data shown below,\nI want you to write 100 video titles.\n\nThe product/service: content videos for businesses.\nWho is the audience: Business owners who are service providers and create content for social networks.\nAudience age: 25 - 50.\n\ndesires,\nWant videos for social networks\nWant to reach as many eyes as possible\nI want him and his abilities to be recognized\nWant to produce interesting and new content\nWant to build a strong online community\nWants to become an authority in his niche.\n\nconcerns,\nAfraid that the videos came out at a low level\nAfraid he has no ideas for content\nAfraid of online exposure\nAfraid of standing in front of a camera\nI'm afraid I don't have anything new to bring, everything has already been said\nAfraid he is not professional enough.\n\ndreams,\nDreaming of making an impact with his service\nDreaming of hacking a network\nDreaming of standing up and expressing his desires\nDreaming of becoming a brand in his niche\nHe dreams of being recognized by his colleagues in the field.\n\nfears,\nAfraid of bad reactions online\nAfraid that the content won't be clear and the message won't get through\nAfraid that the level of professionalism is still not enough\nAfraid that the service will not meet the standard you wanted\nAfraid that you will make videos and nobody will be interested\nAfraid that this thing just won't work.\n\nlimiting beliefs,\nI have to invest a lot of money and time to produce a quality and professional video\nI must be an expert in content creation and video editing\nYou have to be born with a talent for standing in front of a camera\nMust be charismatic to break into the network\nNeed professional equipment to start making videos\nIt is not for everyone to produce content for the web\nI came in too late, it's not my age anymore\nI'm not tech savvy enough for this, it's only for young people.\n\nsupportive beliefs,\nAnyone can create content for social networks\nThose who persevere in creating content will go viral\nIf I learn from those who have succeeded then I will also succeed\nI need to be slavish and understand that this is a marathon process and not a sprint\nThe audience that will follow me will be of much higher quality."
+  },
+  { "from": "human", "value": "MORE" },
+  { "from": "human", "value": "MORE" },
+  { "from": "human", "value": "7 MORE" },
+  {
+    "from": "human",
+    "value": "I've made a hub site comprised of various employee moments (from onboarding to offboarding and other life events such as getting married, getting sick, etc. in between). The last employee moment is retirement (which should be separate from offboarding). How do you feel the page should look like?"
+  },
+  {
+    "from": "human",
+    "value": "I have a set of images, each a scanned attendance sheet containing a list of handwritten student names. Each image is an attendance sheet from a specific day and we have about 20 of those. I want to write some code, using machine learning (or AI) techniques, to decode the names in each image so that I can create a data.frame, one row for each student, and each row having the following columns: the name of the student followed by their attendance status on each of the days (binary variables). I am comfortable with Python and PyTorch (and numpy, etc.)"
+  },
+  {
+    "from": "human",
+    "value": "I am on a Mac, how do I configure `pytesseract` and acquire the necessary binary?"
+  },
+  {
+    "from": "human",
+    "value": "The images are stored as PDF. Do I need to process them differently? Some PDF might contain multiple of these attendance sheets as separate pages."
+  },
+  {
+    "from": "human",
+    "value": "based on the case studies below, generate a website idea to solve problems regarding the case studies.\n\nNon-communicable diseases (NCDs), commonly known as chronic diseases,\nare health conditions that are not transmittable from person to person. Instead,\nthey result from unhealthy lifestyles and are influenced by a combination of\ngenetic, physiological, environmental, and behavioral factors. These diseases\npersist over a long period of time (normally more than 1 year) and can be critical\nto a person\u2019s health. According to the World Health Organization (WHO), the four\nmajor types of non-communicable diseases are cardiovascular diseases,\ncancers, chronic respiratory diseases, and diabetes.\nSince 2000, the number of deaths caused by non-communicable diseases\nhas been steadily rising globally. Research indicates that non-communicable\ndiseases currently account for 74% of all deaths worldwide, claiming an average\nof 41 million lives each year. The leading cause of NCD-related deaths is\ncardiovascular diseases, with 17.9 million fatalities annually. Cancers and chronic\nrespiratory diseases also contribute significantly to NCD-related deaths, with 9.3\nmillion and 4.1 million deaths respectively, followed by diabetes, including its\nrelated kidney disease, which accounts for 2 million deaths (WHO, 2022). Non-communicable diseases are a growing concern, affecting individuals of all ages,\nnot just the late elderly. Each year, 17 million people lost their lives due to non-communicable diseases before reaching 70 years of age, with 85% of these\npremature (i.e. 30-69 years of age) deaths occurring in low- and middle-income\ncountries. The four types of non-communicable diseases mentioned earlier are\nthe main culprits for the majority of all premature NCD fatalities, accounting for\nover 80% of deaths. (WHO, 2022).\nThe heavy burden of non-communicable diseases among individuals of\nworking age results in elevated healthcare expenses, reduced work capacity, and\nfinancial instability. This unseen epidemic is a frequently overlooked source of\npoverty and impedes the economic growth of numerous countries. Its impact is\nintensifying, as the number of individuals, households, and communities affected\nis on the rise and shows no signs of slowing down. Unfortunately, the occurrence\nof premature NCD deaths is more prevalent in low- and middle-income countries.\nThe major cause of this might be due to the rapidly growing population, lacking\naccess to high-quality healthcare services, practicing unhealthy lifestyles, and\npoverty. Additionally, 77% of all NCD deaths, regardless of age group, occur in\nlow- and middle-income countries. This is a concerning issue as NCDs are chronic\nin nature and demand substantial investment in terms of time and money for\ntreatment, which can result in financial strain for individuals from low and middle-income countries.\nrtunately, most non-communicable diseases are preventable. Most non-communicable diseases are caused by common, modifiable risk factors such as\ntobacco use, excessive alcohol consumption, unhealthy diets, and physical\ninactivity. By adopting healthy lifestyle habits, the community has the potential to\nprevent up to 80% of strokes, heart diseases, type 2 diabetes, and over one-third\nof cancers from taking place. In conclusion, the rise of non-communicable\ndiseases is not an issue to be taken lightly, as it is the root cause of widespread\nfatalities, underlying health concerns, and weakened economic development on\na global scale, particularly in low- and middle-income countries. The impact of\nthese diseases on global health is a clarion call, urging us to act swiftly and\ndecisively to prevent and take respective actions to put an end to them. To\neffectively address this growing health crisis, we must employ effective\nprevention and management strategies by utilising the existing knowledge we\nhave today to brainstorm new innovative and cost-effective solutions"
+  },
+  { "from": "human", "value": "give more ideas" },
+  {
+    "from": "human",
+    "value": "Why are anti viral drugs only used for life threatening viruses?"
+  }
+]
